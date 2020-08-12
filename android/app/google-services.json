@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "55143138847",
+    "firebase_url": "https://sahel-4f91d.firebaseio.com",
+    "project_id": "sahel-4f91d",
+    "storage_bucket": "sahel-4f91d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55143138847:android:47b726a3aa14c79506b72a",
+        "android_client_info": {
+          "package_name": "com.example.sahel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55143138847-gob623r6kkvaiua21fd3nda6rl3ihdts.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN8rIaXaXVmn4wsUYFiqMWm8JWv1lH9Hw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55143138847-gob623r6kkvaiua21fd3nda6rl3ihdts.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
