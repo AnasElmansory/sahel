@@ -27,8 +27,8 @@ class SlideShow extends StatelessWidget {
                       ((MediaQuery.of(context).size.height / 8) * 3) * 0.8;
                   final _imgWidth = MediaQuery.of(context).size.width * 0.8;
                   return InkWell(
-                    onTap: () async =>
-                        await provider.unitDetails(_units.data[index], context),
+                    onTap: () =>
+                        provider.toUnitDetails(_units.data[index], context),
                     child: Stack(
                       children: [
                         Positioned(

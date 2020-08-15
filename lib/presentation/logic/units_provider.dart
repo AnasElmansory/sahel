@@ -8,12 +8,18 @@ class UnitsProvider extends ChangeNotifier {
   final GetAllUnitsUseCase useCase;
   UnitsProvider(this.useCase);
 
+  String currentImage;
   Stream unitsList() {
     return useCase.call();
   }
 
-  Future<void> unitDetails(Unit unit, BuildContext context) async {
-    return await Navigator.of(context)
+  void toUnitDetails(Unit unit, BuildContext context) {
+    Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => UnitDetails(unit: unit)));
+  }
+
+  void imgSwitcher(String imgUrl) {
+    currentImage = imgUrl;
+    notifyListeners();
   }
 }
