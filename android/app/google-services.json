@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "55143138847-ch71gfgn2mvk6p9fn2qrnrb9hrn78fbb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sahel",
+            "certificate_hash": "ae9aa55bc7eeea286c878783de4a024ab50db016"
+          }
+        },
+        {
           "client_id": "55143138847-gob623r6kkvaiua21fd3nda6rl3ihdts.apps.googleusercontent.com",
           "client_type": 3
         }
