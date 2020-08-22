@@ -47,14 +47,16 @@ class DataAuthRepository extends AuthRepository {
       return const ErrorUser();
   }
 
-  //! error not yet handled here
   @override
   Future<LocalUser> singInWithPhone(String phone, BuildContext context) async {
-    LocalUser _localUser;
-    await _authService.authWithPhone(phone, context).whenComplete(
-        () async => _localUser = await saveUserToFirestore(getCurrentUser()));
-
-    return _localUser;
+    final Connection _result = await checkConnection();
+    if (_result == Connection.Connected) {
+      LocalUser _localUser;
+      await _authService.authWithPhone(phone, context).whenComplete(
+          () async => _localUser = await saveUserToFirestore(getCurrentUser()));
+      return _localUser;
+    } else
+      return const ErrorUser();
   }
 
   @override

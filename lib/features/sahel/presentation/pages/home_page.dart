@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:sahel/features/sahel/presentation/widgets/home_widgets/drawer.dart';
 import 'package:sahel/features/sahel/presentation/widgets/home_widgets/slide_show.dart';
 import 'package:sahel/features/sahel/presentation/widgets/home_widgets/units_builder.dart';
-import 'package:sahel/features/sahel/providers/Image_file_provider.dart';
 
 class HomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    FileImageProvider.getPath();
     final _height = MediaQuery.of(context).size.height;
     return Scaffold(
         key: scaffoldkey,

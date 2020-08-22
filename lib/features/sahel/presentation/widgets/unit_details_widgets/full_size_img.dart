@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:sahel/features/sahel/providers/navigation_provider.dart';
@@ -8,13 +11,13 @@ import 'package:sahel/features/sahel/providers/navigation_provider.dart';
 
 class FullSizedImage extends StatelessWidget {
   final String url;
-
-  const FullSizedImage({Key key, this.url}) : super(key: key);
+  final File imageFile;
+  const FullSizedImage({Key key, this.url, this.imageFile}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
-    final navProvider = Provider.of<NavigationProvider>(context);
+
     return Container(
       height: _height,
       width: _width,
@@ -26,7 +29,10 @@ class FullSizedImage extends StatelessWidget {
           child: PhotoView(
             customSize: Size(_width, _height),
             initialScale: PhotoViewComputedScale.covered,
-            imageProvider: NetworkImage(url),
+            imageProvider: NetworkToFileImage(
+              url: url,
+              file: imageFile,
+            ),
             loadFailedChild: Center(
               child: Icon(Icons.broken_image),
             ),
@@ -42,7 +48,7 @@ class FullSizedImage extends StatelessWidget {
             child: IconButton(
               color: Color(0xFFFFFFFF),
               icon: Icon(Icons.arrow_back),
-              onPressed: () => navProvider.pop(context),
+              onPressed: () => context.read<NavigationProvider>().pop(context),
             ),
           ),
         ),

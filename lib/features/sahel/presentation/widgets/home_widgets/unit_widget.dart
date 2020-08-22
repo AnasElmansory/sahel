@@ -14,7 +14,6 @@ class UnitWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
-    final imageProvider = Provider.of<FileImageProvider>(context);
     return Container(
       height: _height * 0.25,
       child: Column(
@@ -43,10 +42,8 @@ class UnitWidget extends StatelessWidget {
                     width: 10,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    File img;
-                    imageProvider
-                        .getIMGFile(_unit.name, index)
-                        .then((file) => img = file);
+                    final imgFileProvider =
+                        Provider.of<FileImageProvider>(context);
                     return ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image(
@@ -54,7 +51,8 @@ class UnitWidget extends StatelessWidget {
                             width: _width / 3,
                             image: NetworkToFileImage(
                               url: _unit.images[index],
-                              file: img,
+                              file:
+                                  imgFileProvider.getIMGFile(_unit.name, index),
                             )));
                   },
                 )),

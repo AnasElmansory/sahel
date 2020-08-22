@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../domain/entities/unit.dart';
@@ -23,8 +25,16 @@ class NavigationProvider {
   void toUnitDetails(Unit unit, BuildContext context) =>
       _navigation(context, UnitDetails(unit: unit));
 
-  void showFullImage(BuildContext context, String url) =>
-      _navigation(context, FullSizedImage(url: url));
+  void showFullImage(
+          {BuildContext context,
+          @required String url,
+          @required File imageFile}) =>
+      _navigation(
+          context,
+          FullSizedImage(
+            url: url,
+            imageFile: imageFile,
+          ));
 
   void toSignInPage(BuildContext context) =>
       _navigation(context, SignInPage(), pushReplacement: true);

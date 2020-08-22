@@ -34,7 +34,10 @@ class UserProvider extends ChangeNotifier {
   final navigator = getIt<NavigationProvider>();
 
 //* authentication methods
-  Future<void> getCurrentUser() async => user = _currentUserUseCase.call();
+  Future<void> getCurrentUser() async {
+    user = _currentUserUseCase.call();
+    print(_currentUserUseCase.call());
+  }
 
   Future<void> withGoogle(BuildContext context) async =>
       await _auth(_authUseCase.googleAuthCall, context);
@@ -44,7 +47,10 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> withPhone(String phone, BuildContext context) async {
     final _localUser = await _authUseCase.phoneAuthCall(phone, context);
-    user = _localUser;
+    if (_localUser.runtimeType != ErrorUser) {
+      user = _localUser;
+    } else
+      user = _localUser;
   }
 
   Future<void> signOut(BuildContext context) async =>
@@ -56,7 +62,6 @@ class UserProvider extends ChangeNotifier {
   Future<void> _auth(Future<LocalUser> Function() providerAuthCall,
       BuildContext context) async {
     final _localUser = await providerAuthCall();
-    print(_localUser);
     if (_localUser.runtimeType != ErrorUser) {
       final phone =
           await getIt<NavigationProvider>().toInputPhoneDialog(context);

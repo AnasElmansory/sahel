@@ -10,20 +10,6 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<UserProvider>(context);
-    //   scaffoldkey.currentState
-    //       .showSnackBar(SnackBar(content: AuthFailureWidget(failure)));
-    //   return Drawer(
-    //     child: Center(
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           Icon(Icons.error),
-    //           Text('${failure.message}'),
-    //         ],
-    //       ),
-    //     ),
-    //   );
-    // },
     return Drawer(
       child: ListView(
         children: [

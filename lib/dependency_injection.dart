@@ -25,7 +25,7 @@ void getInit() {
   getIt.registerLazySingleton(() => GetAllUnitsUseCase(getIt()));
   getIt.registerLazySingleton<UnitRepository>(() => DataUnitRepository());
 
-  getIt.registerLazySingleton<FileImageProvider>(() => FileImageProvider());
+  getIt.registerSingleton<FileImageProvider>(FileImageProvider()..getPath());
 
   getIt.registerLazySingleton(() => NavigationProvider());
 
