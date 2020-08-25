@@ -5,6 +5,7 @@ import 'package:sahel/features/sahel/domain/entities/unit.dart';
 import 'package:sahel/features/sahel/presentation/widgets/unit_details_widgets/unit_img_grid.dart';
 import 'package:sahel/features/sahel/presentation/widgets/unit_details_widgets/unit_location.dart';
 import 'package:sahel/features/sahel/providers/navigation_provider.dart';
+import 'package:sahel/features/sahel/providers/user_provider.dart';
 
 class UnitDetails extends StatelessWidget {
   final Unit unit;
@@ -13,10 +14,10 @@ class UnitDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navProvider = Provider.of<NavigationProvider>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('${unit.name}'),
+        elevation: 0,
         backgroundColor: Color(0xFF03045e),
       ),
       body: ListView(
@@ -74,7 +75,10 @@ class UnitDetails extends StatelessWidget {
                 child: Text('احجز'),
                 textColor: Color(0xFFcaf0f8),
                 color: Color(0xFF0077b6),
-                onPressed: () => navProvider.toBookPage(context)),
+                onPressed: () => context.read<UserProvider>().user == null
+                    ? navProvider.toSignInPage(context)
+                    : navProvider.toBookPage(context,
+                        unitRef: unit.unAvailableDays)),
           ),
         ],
       ),

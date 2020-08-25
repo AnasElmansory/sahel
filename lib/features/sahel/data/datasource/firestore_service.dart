@@ -15,4 +15,17 @@ class FirestoreService {
     await _ref.set(UserModel.toJson(user, phone: phone));
     return await _ref.get();
   }
+
+  Stream<DocumentSnapshot> getDaysEvents(DocumentReference unitRef) =>
+      unitRef.snapshots();
+
+  Future<void> updateCalenderEvents(
+          Map data, DocumentReference placeRef) async =>
+      data.forEach((key, value) async {
+        await placeRef.update({
+          'unAvailableDays': FieldValue.arrayUnion([
+            {key: value}
+          ])
+        });
+      });
 }

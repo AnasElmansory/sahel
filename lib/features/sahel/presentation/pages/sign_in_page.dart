@@ -22,14 +22,14 @@ class _SignInPageState extends State<SignInPage> {
     final navProvider = Provider.of<NavigationProvider>(context);
     void ifErrorUser() {
       if (authProvider.user != null &&
-          authProvider.user.runtimeType == ErrorUser) {
+          authProvider.user?.runtimeType == ErrorUser) {
         final errorUser = authProvider.user as ErrorUser;
         _scaffoldKey.currentState.showSnackBar(SnackBar(
             content: Text(
           '${errorUser.message}',
         )));
       } else {
-        navProvider.toHomePage(context);
+        navProvider.toBookPage(context, pReplacment: true);
       }
     }
 

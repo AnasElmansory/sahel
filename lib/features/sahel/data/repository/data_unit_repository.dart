@@ -13,16 +13,14 @@ class DataUnitRepository extends UnitRepository {
 
   final firestoreService = FirestoreService();
 
-  List<Unit> _toUnits(List<DocumentSnapshot> snapshots) {
-    return snapshots.map<Unit>((snapshot) {
-      return UnitModel.fromSnapshot(snapshot);
-    }).toList();
-  }
+  List<Unit> _toUnits(List<QueryDocumentSnapshot> snapshots) => snapshots
+      .map<Unit>((snapshot) => UnitModel.fromSnapshot(snapshot))
+      .toList();
 
   @override
   Stream<List<Unit>> getAllUnits() {
     return firestoreService
         .getUnitsListStream()
-        .asyncMap((event) => _toUnits(event.documents));
+        .asyncMap((event) => _toUnits(event.docs));
   }
 }

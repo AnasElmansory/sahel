@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sahel/features/sahel/presentation/widgets/home_widgets/drawer.dart';
-import 'package:sahel/features/sahel/presentation/widgets/home_widgets/slide_show.dart';
-import 'package:sahel/features/sahel/presentation/widgets/home_widgets/units_builder.dart';
+
+import '../../../../dependency_injection.dart';
+import '../../providers/booking_provider.dart';
+import '../widgets/home_widgets/drawer.dart';
+import '../widgets/home_widgets/slide_show.dart';
+import '../widgets/home_widgets/units_builder.dart';
 
 class HomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();

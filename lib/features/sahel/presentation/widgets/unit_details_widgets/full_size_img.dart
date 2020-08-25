@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:photo_view/photo_view.dart';
@@ -11,8 +10,8 @@ import 'package:sahel/features/sahel/providers/navigation_provider.dart';
 
 class FullSizedImage extends StatelessWidget {
   final String url;
-  final File imageFile;
-  const FullSizedImage({Key key, this.url, this.imageFile}) : super(key: key);
+
+  const FullSizedImage({Key key, this.url}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
@@ -29,9 +28,8 @@ class FullSizedImage extends StatelessWidget {
           child: PhotoView(
             customSize: Size(_width, _height),
             initialScale: PhotoViewComputedScale.covered,
-            imageProvider: NetworkToFileImage(
-              url: url,
-              file: imageFile,
+            imageProvider: NetworkImage(
+              url,
             ),
             loadFailedChild: Center(
               child: Icon(Icons.broken_image),

@@ -1,7 +1,11 @@
-import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sahel/features/sahel/domain/usecases/get_unavailable_days_usecase.dart';
+import 'package:sahel/features/sahel/providers/date_checker_state.dart';
+import 'package:sahel/features/sahel/providers/events_state.dart';
 
+import '../../../dependency_injection.dart';
 import '../domain/entities/unit.dart';
 import '../presentation/pages/book_page.dart';
 import '../presentation/pages/home_page.dart';
@@ -25,24 +29,34 @@ class NavigationProvider {
   void toUnitDetails(Unit unit, BuildContext context) =>
       _navigation(context, UnitDetails(unit: unit));
 
-  void showFullImage(
-          {BuildContext context,
-          @required String url,
-          @required File imageFile}) =>
+  void showFullImage({
+    BuildContext context,
+    @required String url,
+  }) =>
       _navigation(
           context,
           FullSizedImage(
             url: url,
-            imageFile: imageFile,
           ));
 
-  void toSignInPage(BuildContext context) =>
-      _navigation(context, SignInPage(), pushReplacement: true);
+  void toSignInPage(BuildContext context) => _navigation(context, SignInPage());
 
-  void toHomePage(BuildContext context) =>
-      _navigation(context, HomePage(), pushReplacement: true);
+  void toHomePage(BuildContext context, {bool pReplacment}) =>
+      _navigation(context, HomePage(), pushReplacement: pReplacment);
 
-  void toBookPage(BuildContext context) => _navigation(context, BookPage());
+  void toBookPage(BuildContext context,
+      {DocumentReference unitRef, bool pReplacment}) {
+    _navigation(
+        context,
+        MultiProvider(providers: [
+          ChangeNotifierProvider(
+              create: (context) =>
+                  EventState(unitRef, getIt<GetUnAvailableDays>())
+                    ..getCalenderEvents()),
+          ChangeNotifierProvider(create: (context) => DateCheckerState())
+        ], child: BookPage(unitRef: unitRef)),
+        pushReplacement: pReplacment ?? false);
+  }
 
   //todo: implement phone string validation
   Future<String> toInputPhoneDialog(BuildContext context) async =>

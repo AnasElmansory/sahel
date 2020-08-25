@@ -55,8 +55,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> signOut(BuildContext context) async =>
       await _signOutUseCase.call().whenComplete(() {
-        user = LocalUser();
-        navigator.toSignInPage(context);
+        user = null;
       });
 
   Future<void> _auth(Future<LocalUser> Function() providerAuthCall,

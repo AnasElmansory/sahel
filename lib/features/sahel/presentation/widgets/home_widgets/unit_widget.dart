@@ -1,10 +1,6 @@
-import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:network_to_file_image/network_to_file_image.dart';
-import 'package:provider/provider.dart';
 import 'package:sahel/features/sahel/domain/entities/unit.dart';
-import 'package:sahel/features/sahel/providers/Image_file_provider.dart';
 
 class UnitWidget extends StatelessWidget {
   final Unit _unit;
@@ -36,24 +32,19 @@ class UnitWidget extends StatelessWidget {
                 height: _height * 0.15,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
                   itemCount: _unit.images.length,
                   separatorBuilder: (BuildContext context, int index) =>
                       SizedBox(
                     width: 10,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    final imgFileProvider =
-                        Provider.of<FileImageProvider>(context);
                     return ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image(
+                        child: CachedNetworkImage(
                             fit: BoxFit.cover,
                             width: _width / 3,
-                            image: NetworkToFileImage(
-                              url: _unit.images[index],
-                              file:
-                                  imgFileProvider.getIMGFile(_unit.name, index),
-                            )));
+                            imageUrl: _unit.images[index]));
                   },
                 )),
           )

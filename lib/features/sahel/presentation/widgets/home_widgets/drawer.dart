@@ -14,20 +14,29 @@ class HomeDrawer extends StatelessWidget {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName:
-                Text("${provider.user.name ?? provider.user.phoneNumber}"),
-            accountEmail: Text("${provider.user.email ?? ''}"),
+            accountName: Text(
+                "${provider.user?.name ?? provider.user?.phoneNumber ?? 'Guest'}"),
+            accountEmail: Text("${provider.user?.email ?? ''}"),
             currentAccountPicture: ClipRRect(
               child: CircleAvatar(
-                backgroundImage: provider.user.photoUrl != null
-                    ? NetworkImage(provider.user.photoUrl)
-                    : null,
-              ),
+                  backgroundImage: provider.user?.photoUrl != null
+                      ? NetworkImage(provider.user?.photoUrl)
+                      : null,
+                  child: provider.user?.photoUrl == null
+                      ? Icon(
+                          Icons.account_circle,
+                          size: 30,
+                        )
+                      : null),
             ),
           ),
-          ListTile(
-            title: Text('Sign Out'),
-            onTap: () => provider.signOut(context),
+          IgnorePointer(
+            ignoring: provider.user == null,
+            child: ListTile(
+              enabled: provider.user != null,
+              title: Text('Sign Out'),
+              onTap: () => provider.signOut(context),
+            ),
           ),
         ],
       ),
