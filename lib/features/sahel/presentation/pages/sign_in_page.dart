@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -7,6 +8,9 @@ import 'package:sahel/features/sahel/providers/navigation_provider.dart';
 import 'package:sahel/features/sahel/providers/user_provider.dart';
 
 class SignInPage extends StatefulWidget {
+  final DocumentReference unitRef;
+
+  const SignInPage({Key key, this.unitRef}) : super(key: key);
   @override
   _SignInPageState createState() => _SignInPageState();
 }
@@ -29,7 +33,8 @@ class _SignInPageState extends State<SignInPage> {
           '${errorUser.message}',
         )));
       } else {
-        navProvider.toBookPage(context, pReplacment: true);
+        navProvider.toBookPage(context,
+            unitRef: widget.unitRef, pReplacment: true);
       }
     }
 
@@ -60,7 +65,12 @@ class _SignInPageState extends State<SignInPage> {
                       String phone = '+2$string';
                       await authProvider
                           .withPhone(phone, context)
-                          .whenComplete(ifErrorUser);
+                          .catchError((onError) {
+                        _scaffoldKey.currentState.showSnackBar(SnackBar(
+                          content: Text('${onError.toString()}'),
+                        ));
+                      }).whenComplete(
+                              () async => await authProvider.getCurrentUser());
                       _controller.clear();
                     },
                   ),

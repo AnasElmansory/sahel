@@ -7,11 +7,11 @@ abstract class AuthRepository {
 
   Future<LocalUser> signInWithFacebook();
 
-  Future<LocalUser> singInWithPhone(String phone, BuildContext context);
+  Future<void> singInWithPhone(String phone, BuildContext context);
 
   Future<LocalUser> saveUserToFirestore(LocalUser user, {String phone});
 
-  LocalUser getCurrentUser();
+  Future<LocalUser> getCurrentUser();
 
   Future<void> singOut();
 }

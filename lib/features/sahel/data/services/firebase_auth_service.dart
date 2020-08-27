@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sahel/dependency_injection.dart';
+import 'package:sahel/features/sahel/data/models/user_model.dart';
+import 'package:sahel/features/sahel/domain/repository/auth_repository.dart';
 
 class AuthService {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -41,45 +44,26 @@ class AuthService {
       await _auth.verifyPhoneNumber(
         phoneNumber: phone,
         verificationCompleted: (AuthCredential credential) async {
-          await _auth.signInWithCredential(credential);
+          final user = await _auth.signInWithCredential(credential);
+          await getIt<AuthRepository>()
+              .saveUserToFirestore(UserModel.fromFirebaseUser(user.user));
         },
-        verificationFailed: (ex) {
-          print('cod: ${ex.code}');
-          print('cod: ${ex.message}');
+        verificationFailed: (ex) async {
+          await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text(
+                        '${ex.code != null ? ex.code : 'qouta exceeded'}',
+                        style: TextStyle(color: Colors.red)),
+                    content: Text(
+                        '${ex.message != null ? ex.message : 'try again later...'}'),
+                  ));
         },
-        codeSent: (verificationId, forceResendingToken) async {
-          // _forceResendingToken = forceResendingToken;
-          // String smscode = await showDialog<String>(
-          //     context: context, builder: (context) => SMSHandler(phone));
-          // PhoneAuthCredential phoneAuthCredential =
-          //     PhoneAuthProvider.credential(
-          //         verificationId: verificationId, smsCode: smscode);
-          // await _auth.signInWithCredential(phoneAuthCredential);
-          print('smsCode');
-        },
-        codeAutoRetrievalTimeout: (verificationId) async {
-          // String smscode = await showDialog<String>(
-          //     context: context, builder: (context) => SMSHandler(phone));
-          // PhoneAuthCredential phoneAuthCredential =
-          //     PhoneAuthProvider.credential(
-          //         verificationId: verificationId, smsCode: smscode);
-          // await _auth.signInWithCredential(phoneAuthCredential);
-          print('codeauto re timout');
-        },
+        codeSent: (verificationId, forceResendingToken) {},
+        codeAutoRetrievalTimeout: (verificationId) {},
       );
 
   Future<void> signOut() async => await _auth.signOut();
 
   User currentUser() => _auth.currentUser;
-
-  // Future<void> forceResendToken(PhoneAuth phoneAuth) async {
-  //   await _auth.verifyPhoneNumber(
-  //     phoneNumber: phoneAuth.phoneNumber,
-  //     verificationCompleted: phoneAuth.verificationCompleted,
-  //     verificationFailed: phoneAuth.verificationFailed,
-  //     codeSent: phoneAuth.codeSent,
-  //     codeAutoRetrievalTimeout: phoneAuth.codeAutoRetrievalTimeout,
-  //     forceResendingToken: phoneAuth.forceResendingToken,
-  //   );
-  // }
 }

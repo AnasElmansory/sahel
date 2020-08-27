@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
-import 'package:sahel/features/sahel/providers/navigation_provider.dart';
 
-//! todo: check connection
-//todo: save images to localfile
+import '../../../providers/navigation_provider.dart';
 
 class FullSizedImage extends StatelessWidget {
   final String url;
@@ -26,9 +23,10 @@ class FullSizedImage extends StatelessWidget {
           height: _height,
           width: _width,
           child: PhotoView(
+            heroAttributes: PhotoViewHeroAttributes(tag: 'fullsize'),
             customSize: Size(_width, _height),
             initialScale: PhotoViewComputedScale.covered,
-            imageProvider: NetworkImage(
+            imageProvider: CachedNetworkImageProvider(
               url,
             ),
             loadFailedChild: Center(

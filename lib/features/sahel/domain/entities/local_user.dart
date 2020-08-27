@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class LocalUser {
   final String uid;
   final String name;
   final String email;
   final String photoUrl;
-  final Timestamp lastTimeSignIn;
+  final DateTime lastTimeSignIn;
   final String phoneNumber;
   final List favs;
 

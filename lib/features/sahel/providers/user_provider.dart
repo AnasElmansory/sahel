@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sahel/features/sahel/data/models/user_model.dart';
 
 import '../../../dependency_injection.dart';
+import '../data/models/user_model.dart';
 import '../domain/entities/local_user.dart';
 import '../domain/usecases/user_auth/auth_usecase.dart';
 import '../domain/usecases/user_auth/get_current_user_usecase.dart';
@@ -30,13 +30,19 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-//* navigator
-  final navigator = getIt<NavigationProvider>();
+  String userNameLetters(String name) {
+    if (name != null && user != null) {
+      final nameList = name.split(' ');
+      var fst = nameList.first;
+      var last = nameList.last;
+      return ("${fst.substring(0, 1)}${last.substring(0, 1)}").toUpperCase();
+    } else
+      return 'Guest';
+  }
 
 //* authentication methods
   Future<void> getCurrentUser() async {
-    user = _currentUserUseCase.call();
-    print(_currentUserUseCase.call());
+    user = await _currentUserUseCase.call();
   }
 
   Future<void> withGoogle(BuildContext context) async =>
@@ -46,11 +52,7 @@ class UserProvider extends ChangeNotifier {
       await _auth(_authUseCase.facebookAuthCall, context);
 
   Future<void> withPhone(String phone, BuildContext context) async {
-    final _localUser = await _authUseCase.phoneAuthCall(phone, context);
-    if (_localUser.runtimeType != ErrorUser) {
-      user = _localUser;
-    } else
-      user = _localUser;
+    await _authUseCase.phoneAuthCall(phone, context);
   }
 
   Future<void> signOut(BuildContext context) async =>

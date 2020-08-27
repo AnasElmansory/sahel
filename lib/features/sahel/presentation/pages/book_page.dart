@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sahel/features/sahel/presentation/widgets/book_widgets/date_checker.dart';
-import 'package:sahel/features/sahel/presentation/widgets/book_widgets/date_picker_widget.dart';
-import 'package:sahel/features/sahel/providers/booking_provider.dart';
-import 'package:sahel/features/sahel/providers/date_checker_state.dart';
-import 'package:sahel/features/sahel/providers/events_state.dart';
-import 'package:sahel/features/sahel/providers/user_provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import '../../providers/booking_provider.dart';
+import '../../providers/events_state.dart';
+import '../../providers/user_provider.dart';
+import '../widgets/book_widgets/date_checker.dart';
+import '../widgets/book_widgets/date_picker_widget.dart';
 
 class BookPage extends StatefulWidget {
   final DocumentReference unitRef;

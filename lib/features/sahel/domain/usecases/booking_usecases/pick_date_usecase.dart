@@ -5,11 +5,7 @@ class PickDateUseCase {
 
   const PickDateUseCase(this._bookRepository);
 
-  Future<dynamic> call(context) async {
-    try {
-      return await _bookRepository.pickDate(context);
-    } catch (e) {
-      return e.toString();
-    }
+  Future<DateTime> call(context) async {
+    return await _bookRepository.pickDate(context);
   }
 }

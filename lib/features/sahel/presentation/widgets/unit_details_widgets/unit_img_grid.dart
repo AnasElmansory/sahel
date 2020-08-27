@@ -5,11 +5,11 @@ import 'package:provider/provider.dart';
 import '../../../providers/navigation_provider.dart';
 import '../../../providers/units_provider.dart';
 
-class UnitIMGGrid extends StatelessWidget {
+class UnitIMGsGrid extends StatelessWidget {
   final List imgList;
   final String unitName;
 
-  const UnitIMGGrid({Key key, this.imgList, this.unitName}) : super(key: key);
+  const UnitIMGsGrid({Key key, this.imgList, this.unitName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +29,25 @@ class UnitIMGGrid extends StatelessWidget {
             child: InkWell(
               onTap: () => context.read<NavigationProvider>().showFullImage(
                   context: context,
-                  url: _unitsProvider.currentImage ?? imgList.first),
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Container(
-                    width: _width,
-                    child: ClipRRect(
-                      // borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        imageUrl: imgList[imageIndex],
-                        // ),
+                  url: imgList.contains(_unitsProvider.currentImage)
+                      ? _unitsProvider.currentImage
+                      : imgList.first),
+              child: Hero(
+                tag: 'fullsize',
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Container(
+                      width: _width * 0.8,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: imgList[imageIndex],
+                          // ),
+                        ),
                       ),
-                    ),
-                  )),
+                    )),
+              ),
             ),
           ),
           Expanded(
@@ -56,15 +61,27 @@ class UnitIMGGrid extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: InkWell(
-                      onTap: () => _unitsProvider.currentImage = imgList[index],
-                      child: Container(
-                          child: CachedNetworkImage(
-                        imageUrl: imgList[index],
-                        fit: BoxFit.cover,
-                      )),
+                  child: AnimatedContainer(
+                    decoration: _unitsProvider.currentImage == imgList[index]
+                        ? BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.fromBorderSide(BorderSide(
+                                color: Color(0xFF023E8A),
+                                width: 3,
+                                style: BorderStyle.solid)))
+                        : BoxDecoration(
+                            borderRadius: BorderRadius.circular(15)),
+                    duration: const Duration(milliseconds: 400),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
+                        onTap: () =>
+                            _unitsProvider.currentImage = imgList[index],
+                        child: CachedNetworkImage(
+                          imageUrl: imgList[index],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
                 );

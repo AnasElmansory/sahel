@@ -22,8 +22,7 @@ void main() async {
       ChangeNotifierProvider<BookState>(
           create: (BuildContext context) => getIt()),
       ChangeNotifierProvider<UnitsProvider>(
-        create: (BuildContext context) => getIt(),
-      ),
+          create: (BuildContext context) => getIt()..getUnitsStream()),
       Provider<NavigationProvider>(create: (BuildContext context) => getIt()),
     ],
     child: MyApp(),

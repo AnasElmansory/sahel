@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sahel/features/sahel/domain/usecases/get_unavailable_days_usecase.dart';
+
+import '../domain/usecases/booking_usecases/get_unavailable_days_usecase.dart';
 
 class EventState extends ChangeNotifier {
   final DocumentReference _reference;

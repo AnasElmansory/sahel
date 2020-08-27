@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sahel/features/sahel/domain/entities/unit.dart';
 
 class UnitModel extends Unit {
+  static final _firestore = FirebaseFirestore.instance;
   UnitModel(
       {String name,
       String description,
@@ -31,4 +32,25 @@ class UnitModel extends Unit {
       unAvailableDays: _snapshot['unAvailableDays'],
     );
   }
+
+  factory UnitModel.fromJson(Map<String, dynamic> json) {
+    return UnitModel(
+      name: json['name'],
+      description: json['description'],
+      price: json['price'],
+      images: json['images'],
+      longitude: json['longitude'] ?? null,
+      latitude: json['latitude'] ?? null,
+      unAvailableDays: _firestore.doc(json['unAvailableDays']),
+    );
+  }
+  static Map<String, dynamic> toJson(UnitModel unit) => {
+        'name': unit.name,
+        'description': unit.description,
+        'price': unit.price,
+        'images': unit.images,
+        'latitude': unit.latitude,
+        'longitude': unit.longitude,
+        'unAvailableDays': unit.unAvailableDays.path,
+      };
 }

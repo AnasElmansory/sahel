@@ -9,7 +9,7 @@ class UserModel extends LocalUser {
     String email,
     String phoneNumber,
     String photoUrl,
-    Timestamp lastTimeSignIn,
+    DateTime lastTimeSignIn,
     List favs,
   }) : super(
             uid: uid,
@@ -27,7 +27,7 @@ class UserModel extends LocalUser {
       email: user.email,
       phoneNumber: user.phoneNumber,
       photoUrl: user.photoURL,
-      lastTimeSignIn: Timestamp.fromDate(user.metadata.lastSignInTime),
+      lastTimeSignIn: user.metadata.lastSignInTime,
     );
   }
   factory UserModel.fromDsnapshot(DocumentSnapshot snapshot) {
@@ -37,12 +37,26 @@ class UserModel extends LocalUser {
       name: user['name'],
       email: user['email'],
       phoneNumber: user['phoneNumber'],
-      lastTimeSignIn: user['lastTimeSignIn'],
+      lastTimeSignIn: user['lastTimeSignIn'].toDate(),
       photoUrl: user['photoUrl'],
       favs: user['favs'],
     );
   }
-  static Map<String, dynamic> toJson(LocalUser user, {String phone}) =>
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      uid: json['uid'],
+      name: json['name'],
+      email: json['email'],
+      phoneNumber: json['phoneNumber'],
+      lastTimeSignIn: json['lastTimeSignIn'],
+      photoUrl: json['photoUrl'],
+      favs: json['favs'],
+    );
+  }
+
+  static Map<String, dynamic> toJson(LocalUser user,
+          {String phone, bool convertTime = false}) =>
       <String, dynamic>{
         'uid': user.uid,
         'name': user.name,
@@ -56,6 +70,7 @@ class UserModel extends LocalUser {
 
 class ErrorUser extends LocalUser {
   final String message = 'check your internet Connection';
+
   @override
   String toString() {
     return '$message';

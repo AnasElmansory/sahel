@@ -11,6 +11,6 @@ class AuthUseCase {
 
   Future<LocalUser> googleAuthCall() => _authRepository.signInWithGoogle();
 
-  Future<LocalUser> phoneAuthCall(String phone, BuildContext context) =>
+  Future<void> phoneAuthCall(String phone, BuildContext context) =>
       _authRepository.singInWithPhone(phone, context);
 }

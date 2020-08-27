@@ -8,10 +8,10 @@ import 'features/sahel/data/services/firebase_auth_service.dart';
 import 'features/sahel/domain/repository/auth_repository.dart';
 import 'features/sahel/domain/repository/book_repository.dart';
 import 'features/sahel/domain/repository/unit_repository.dart';
+import 'features/sahel/domain/usecases/booking_usecases/get_unavailable_days_usecase.dart';
+import 'features/sahel/domain/usecases/booking_usecases/pick_date_usecase.dart';
+import 'features/sahel/domain/usecases/booking_usecases/update_calender_events.dart';
 import 'features/sahel/domain/usecases/get_all_units_usecase.dart';
-import 'features/sahel/domain/usecases/get_unavailable_days_usecase.dart';
-import 'features/sahel/domain/usecases/pick_date_usecase.dart';
-import 'features/sahel/domain/usecases/update_calender_events.dart';
 import 'features/sahel/domain/usecases/user_auth/auth_usecase.dart';
 import 'features/sahel/domain/usecases/user_auth/get_current_user_usecase.dart';
 import 'features/sahel/domain/usecases/user_auth/save_user_db.dart';
@@ -32,8 +32,9 @@ void getInit() {
         getIt(),
       ));
 
-  getIt.registerLazySingleton(() => UpdateCalenderEventsUseCase(getIt()));
   getIt.registerLazySingleton(() => GetAllUnitsUseCase(getIt()));
+
+  getIt.registerLazySingleton(() => UpdateCalenderEventsUseCase(getIt()));
   getIt.registerLazySingleton(() => GetUnAvailableDays(getIt()));
   getIt.registerLazySingleton(() => PickDateUseCase(getIt()));
 

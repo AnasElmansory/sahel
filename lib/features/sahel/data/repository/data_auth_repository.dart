@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:sahel/features/core/error/connection_status.dart';
 
 import '../../../../dependency_injection.dart';
+import '../../../core/error/connection_status.dart';
 import '../../domain/entities/local_user.dart';
 import '../../domain/repository/auth_repository.dart';
 import '../datasource/firestore_service.dart';
@@ -47,31 +47,37 @@ class DataAuthRepository extends AuthRepository {
       return const ErrorUser();
   }
 
+//!have some errors here
   @override
-  Future<LocalUser> singInWithPhone(String phone, BuildContext context) async {
-    final Connection _result = await checkConnection();
-    if (_result == Connection.Connected) {
-      LocalUser _localUser;
-      await _authService.authWithPhone(phone, context).whenComplete(
-          () async => _localUser = await saveUserToFirestore(getCurrentUser()));
-      return _localUser;
-    } else
-      return const ErrorUser();
+  Future<void> singInWithPhone(String phone, BuildContext context) async {
+    await _authService.authWithPhone(phone, context);
   }
 
+//todo: handle errors
   @override
-  LocalUser getCurrentUser() => _authService.currentUser() != null
-      ? UserModel.fromFirebaseUser(_authService.currentUser())
-      : null;
-
-  @override
-  Future<void> singOut() async => await _authService.signOut();
+  Future<LocalUser> getCurrentUser() async {
+    final userResult = _authService.currentUser();
+    final connectionState = await checkConnection();
+    if (userResult == null) {
+      return null;
+    } else if (connectionState == Connection.Connected) {
+      final firestoreUser =
+          await _firestoreService.getUserProfileFromFirestore(userResult);
+      return UserModel.fromDsnapshot(firestoreUser);
+    } else {
+      return null;
+    }
+  }
 
   @override
   Future<LocalUser> saveUserToFirestore(LocalUser localUser,
       {String phone}) async {
-    final user =
-        await _firestoreService.saveUserProfile(localUser, phone: phone);
+    final user = await _firestoreService.saveUserProfileToFirestore(localUser,
+        phone: phone);
+
     return UserModel.fromDsnapshot(user);
   }
+
+  @override
+  Future<void> singOut() async => await _authService.signOut();
 }

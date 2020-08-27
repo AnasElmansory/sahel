@@ -18,11 +18,12 @@ class UnitDetails extends StatelessWidget {
       appBar: AppBar(
         title: Text('${unit.name}'),
         elevation: 0,
-        backgroundColor: Color(0xFF03045e),
+        backgroundColor: Color(0xFF0077B6),
       ),
       body: ListView(
+        physics: BouncingScrollPhysics(),
         children: [
-          UnitIMGGrid(imgList: unit.images),
+          UnitIMGsGrid(imgList: unit.images),
           Divider(
             endIndent: 40,
             indent: 30,
@@ -76,7 +77,7 @@ class UnitDetails extends StatelessWidget {
                 textColor: Color(0xFFcaf0f8),
                 color: Color(0xFF0077b6),
                 onPressed: () => context.read<UserProvider>().user == null
-                    ? navProvider.toSignInPage(context)
+                    ? navProvider.toSignInPage(context, unit.unAvailableDays)
                     : navProvider.toBookPage(context,
                         unitRef: unit.unAvailableDays)),
           ),

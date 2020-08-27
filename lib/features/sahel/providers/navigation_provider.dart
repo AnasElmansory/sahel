@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sahel/features/sahel/domain/usecases/get_unavailable_days_usecase.dart';
-import 'package:sahel/features/sahel/providers/date_checker_state.dart';
-import 'package:sahel/features/sahel/providers/events_state.dart';
 
 import '../../../dependency_injection.dart';
 import '../domain/entities/unit.dart';
+import '../domain/usecases/booking_usecases/get_unavailable_days_usecase.dart';
 import '../presentation/pages/book_page.dart';
 import '../presentation/pages/home_page.dart';
 import '../presentation/pages/sign_in_page.dart';
 import '../presentation/pages/unit_details.dart';
 import '../presentation/widgets/unit_details_widgets/full_size_img.dart';
+import 'date_checker_state.dart';
+import 'events_state.dart';
 
 class NavigationProvider {
   void _navigation(BuildContext context, Widget _route,
@@ -39,7 +39,8 @@ class NavigationProvider {
             url: url,
           ));
 
-  void toSignInPage(BuildContext context) => _navigation(context, SignInPage());
+  void toSignInPage(BuildContext context, DocumentReference unitRef) =>
+      _navigation(context, SignInPage(unitRef: unitRef));
 
   void toHomePage(BuildContext context, {bool pReplacment}) =>
       _navigation(context, HomePage(), pushReplacement: pReplacment);

@@ -15,8 +15,8 @@ class DatePicker extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final dateProvider = Provider.of<BookState>(context);
-    final startDate = dateProvider.startDate?.toString()?.substring(1, 10);
-    final endDate = dateProvider.endDate?.toString()?.substring(1, 10);
+    final startDate = dateProvider.startDate?.toString()?.substring(0, 10);
+    final endDate = dateProvider.endDate?.toString()?.substring(0, 10);
     return Container(
       height: (height * 0.1),
       child: Column(

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../dependency_injection.dart';
-import '../../providers/booking_provider.dart';
 import '../widgets/home_widgets/drawer.dart';
 import '../widgets/home_widgets/slide_show.dart';
 import '../widgets/home_widgets/units_builder.dart';
@@ -16,7 +14,7 @@ class HomePage extends StatelessWidget {
         key: scaffoldkey,
         drawer: HomeDrawer(scaffoldkey: scaffoldkey),
         appBar: AppBar(
-          backgroundColor: Color(0xFF03045e),
+          backgroundColor: Color(0xFF0077B6),
         ),
         body: Column(
           children: [

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:sahel/features/sahel/domain/entities/unit.dart';
+
+import '../../../domain/entities/unit.dart';
 
 class UnitWidget extends StatelessWidget {
   final Unit _unit;
@@ -17,7 +18,7 @@ class UnitWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Padding(
+              Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   _unit.name,

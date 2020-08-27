@@ -5,5 +5,5 @@ class GetCurrentUserUseCase {
   final AuthRepository _authRepository;
   GetCurrentUserUseCase(this._authRepository);
 
-  LocalUser call() => _authRepository.getCurrentUser();
+  Future<LocalUser> call() async => await _authRepository.getCurrentUser();
 }

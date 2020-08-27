@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sahel/features/sahel/domain/entities/either_date.dart';
-import 'package:sahel/features/sahel/domain/usecases/pick_date_usecase.dart';
-import 'package:sahel/features/sahel/domain/usecases/update_calender_events.dart';
-import 'package:sahel/features/sahel/providers/date_checker_state.dart';
 import 'package:provider/provider.dart';
-import 'package:sahel/features/sahel/providers/events_state.dart';
+
+import '../domain/usecases/booking_usecases/pick_date_usecase.dart';
+import '../domain/usecases/booking_usecases/update_calender_events.dart';
+import 'date_checker_state.dart';
+import 'events_state.dart';
 
 class BookState extends ChangeNotifier {
   final PickDateUseCase _pickDateUseCase;
@@ -35,15 +35,15 @@ class BookState extends ChangeNotifier {
     bool isStart,
     GlobalKey<ScaffoldState> scaffoldkey,
   ) async {
-    final eitherDate = EitherDate(await _pickDateUseCase.call(context));
-    if (eitherDate.value != null) {
+    DateTime pickedDate = await _pickDateUseCase.call(context);
+    if (pickedDate != null) {
       if (isStart) {
-        startDate = eitherDate.value;
+        startDate = pickedDate;
       } else {
-        endDate = eitherDate.value;
+        endDate = pickedDate;
       }
     } else
-      snackError(eitherDate.errMessage, scaffoldkey: scaffoldkey);
+      snackError('canceled', scaffoldkey: scaffoldkey);
   }
 
   Map<String, List<dynamic>> calculateDuration(
