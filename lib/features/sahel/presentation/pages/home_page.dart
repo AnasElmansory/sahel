@@ -10,9 +10,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
+
     return Scaffold(
         key: scaffoldkey,
-        drawer: HomeDrawer(scaffoldkey: scaffoldkey),
+        drawer: HomeDrawer(scaffoldKey: scaffoldkey),
         appBar: AppBar(
           backgroundColor: Color(0xFF0077B6),
         ),

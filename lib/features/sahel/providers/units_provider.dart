@@ -24,7 +24,7 @@ class UnitsProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  void getUnitsStream() async {
+  void getUnitsStream() {
     _subscription = _getUnitsUseCase().listen((event) {
       cachedUnits = event;
     }, onError: (e) {

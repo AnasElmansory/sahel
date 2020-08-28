@@ -7,6 +7,13 @@ import 'package:sahel/features/sahel/data/models/user_model.dart';
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
 
+
+  Stream<QuerySnapshot> getCurrentUserStream(String uid){
+    return _firestore.collection('users').where('uid',isEqualTo: uid).snapshots();
+  }
+
+
+
   Stream<QuerySnapshot> getUnitsListStream() =>
       _firestore.collection('units').snapshots();
 

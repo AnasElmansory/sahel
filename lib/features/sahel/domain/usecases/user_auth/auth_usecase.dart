@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../entities/local_user.dart';
@@ -11,6 +12,6 @@ class AuthUseCase {
 
   Future<LocalUser> googleAuthCall() => _authRepository.signInWithGoogle();
 
-  Future<void> phoneAuthCall(String phone, BuildContext context) =>
-      _authRepository.singInWithPhone(phone, context);
+  Future<void> phoneAuthCall(String phone, BuildContext context, DocumentReference unitRef) =>
+      _authRepository.singInWithPhone(phone, context, unitRef);
 }

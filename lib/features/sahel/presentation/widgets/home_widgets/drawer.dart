@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import '../../../providers/user_provider.dart';
 
 class HomeDrawer extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldkey;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const HomeDrawer({Key key, this.scaffoldkey}) : super(key: key);
+  const HomeDrawer({Key key, this.scaffoldKey}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<UserProvider>(context);

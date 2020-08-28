@@ -24,6 +24,7 @@ class _SignInPageState extends State<SignInPage> {
     final _width = MediaQuery.of(context).size.width;
     final authProvider = Provider.of<UserProvider>(context);
     final navProvider = Provider.of<NavigationProvider>(context);
+
     void ifErrorUser() {
       if (authProvider.user != null &&
           authProvider.user?.runtimeType == ErrorUser) {
@@ -64,13 +65,13 @@ class _SignInPageState extends State<SignInPage> {
                     onFieldSubmitted: (string) async {
                       String phone = '+2$string';
                       await authProvider
-                          .withPhone(phone, context)
-                          .catchError((onError) {
+                          .withPhone(phone, context, widget.unitRef)
+                          .catchError((err) {
                         _scaffoldKey.currentState.showSnackBar(SnackBar(
-                          content: Text('${onError.toString()}'),
+                          content: Text('${err.toString()}'),
                         ));
-                      }).whenComplete(
-                              () async => await authProvider.getCurrentUser());
+                      });
+
                       _controller.clear();
                     },
                   ),

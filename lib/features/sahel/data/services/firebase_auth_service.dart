@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sahel/dependency_injection.dart';
 import 'package:sahel/features/sahel/data/models/user_model.dart';
 import 'package:sahel/features/sahel/domain/repository/auth_repository.dart';
+import 'package:sahel/features/sahel/providers/navigation_provider.dart';
 
 class AuthService {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -40,13 +42,14 @@ class AuthService {
     return _userCredential;
   }
 
-  Future<void> authWithPhone(String phone, BuildContext context) async =>
+  Future<void> authWithPhone(String phone, BuildContext context, DocumentReference unitRef) async =>
       await _auth.verifyPhoneNumber(
         phoneNumber: phone,
         verificationCompleted: (AuthCredential credential) async {
           final user = await _auth.signInWithCredential(credential);
           await getIt<AuthRepository>()
               .saveUserToFirestore(UserModel.fromFirebaseUser(user.user));
+           getIt<NavigationProvider>().toBookPage(context,pReplacment: true, unitRef: unitRef);
         },
         verificationFailed: (ex) async {
           await showDialog(

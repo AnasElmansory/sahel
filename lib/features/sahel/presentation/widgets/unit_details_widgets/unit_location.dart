@@ -11,7 +11,7 @@ class UnitLocation extends StatefulWidget {
 class _UnitLocationState extends State<UnitLocation> {
   bool _mapLoading = false;
   Future _future =
-      Future.delayed(const Duration(milliseconds: 300), () => true);
+      Future.delayed(const Duration(milliseconds: 250), () => true);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class _UnitLocationState extends State<UnitLocation> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 400),
+                  duration: const Duration(milliseconds:250),
                   transitionBuilder: (child, animation) => FadeTransition(
                         opacity: animation,
                         child: child,

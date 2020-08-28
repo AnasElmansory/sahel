@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -29,7 +30,7 @@ class DataAuthRepository extends AuthRepository {
           UserModel.fromFirebaseUser(_userCredential.user);
       return _localUser;
     } else
-      return const ErrorUser();
+      return ErrorUser();
   }
 
   @override
@@ -44,29 +45,23 @@ class DataAuthRepository extends AuthRepository {
           UserModel.fromFirebaseUser(_userCredential.user);
       return _localUser;
     } else
-      return const ErrorUser();
+      return ErrorUser();
   }
 
 //!have some errors here
   @override
-  Future<void> singInWithPhone(String phone, BuildContext context) async {
-    await _authService.authWithPhone(phone, context);
+  Future<void> singInWithPhone(String phone, BuildContext context, DocumentReference unitRef) async {
+    await _authService.authWithPhone(phone, context, unitRef);
   }
 
 //todo: handle errors
   @override
-  Future<LocalUser> getCurrentUser() async {
+  LocalUser getCurrentUser() {
     final userResult = _authService.currentUser();
-    final connectionState = await checkConnection();
-    if (userResult == null) {
-      return null;
-    } else if (connectionState == Connection.Connected) {
-      final firestoreUser =
-          await _firestoreService.getUserProfileFromFirestore(userResult);
-      return UserModel.fromDsnapshot(firestoreUser);
-    } else {
-      return null;
-    }
+    if (userResult != null) {
+      return UserModel.fromFirebaseUser(userResult);
+    } else
+      return ErrorUser(message: "you are\'t logged in");
   }
 
   @override
@@ -80,4 +75,11 @@ class DataAuthRepository extends AuthRepository {
 
   @override
   Future<void> singOut() async => await _authService.signOut();
+
+  @override
+  Stream<LocalUser> getCurrentUserStream(String uid) {
+    return _firestoreService
+        .getCurrentUserStream(uid)
+        .asyncMap((query) => UserModel.fromDsnapshot(query.docs.single));
+  }
 }

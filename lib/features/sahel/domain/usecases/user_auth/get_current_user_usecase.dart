@@ -5,5 +5,6 @@ class GetCurrentUserUseCase {
   final AuthRepository _authRepository;
   GetCurrentUserUseCase(this._authRepository);
 
-  Future<LocalUser> call() async => await _authRepository.getCurrentUser();
+  LocalUser call()  =>  _authRepository.getCurrentUser();
+  Stream<LocalUser> watchUser(String uid) => _authRepository.getCurrentUserStream(uid);
 }

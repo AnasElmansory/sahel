@@ -69,12 +69,12 @@ class UserModel extends LocalUser {
 }
 
 class ErrorUser extends LocalUser {
-  final String message = 'check your internet Connection';
+  String message = 'check your internet Connection';
 
   @override
   String toString() {
     return '$message';
   }
 
-  const ErrorUser();
+  ErrorUser({this.message});
 }

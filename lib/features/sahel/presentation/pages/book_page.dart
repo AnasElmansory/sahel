@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../dependency_injection.dart';
 import '../../providers/booking_provider.dart';
 import '../../providers/events_state.dart';
 import '../../providers/user_provider.dart';
@@ -19,6 +20,7 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _controller = CalendarController();
+
 
   @override
   Widget build(BuildContext context) {

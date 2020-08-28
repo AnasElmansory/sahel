@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../dependency_injection.dart';
@@ -22,12 +25,22 @@ class UserProvider extends ChangeNotifier {
     this._saveUserUseCase,
   );
 
+
+
+  StreamSubscription _userStreamSubscription;
+
   //* userProfile across the app
   LocalUser _user;
   LocalUser get user => _user;
   set user(LocalUser newUser) {
     _user = newUser;
     notifyListeners();
+  }
+
+  @override
+  void dispose(){
+    _userStreamSubscription?.cancel();
+    super.dispose();
   }
 
   String userNameLetters(String name) {
@@ -41,8 +54,14 @@ class UserProvider extends ChangeNotifier {
   }
 
 //* authentication methods
-  Future<void> getCurrentUser() async {
-    user = await _currentUserUseCase.call();
+  void getCurrentUser()  {
+     final localUser = _currentUserUseCase.call();
+     if(localUser.runtimeType == ErrorUser){
+       print(localUser as ErrorUser);
+     }else{
+     _userStreamSubscription = _currentUserUseCase.watchUser(localUser.uid).listen((event) {
+      user = event;
+    });}
   }
 
   Future<void> withGoogle(BuildContext context) async =>
@@ -51,8 +70,8 @@ class UserProvider extends ChangeNotifier {
   Future<void> withFacebook(BuildContext context) async =>
       await _auth(_authUseCase.facebookAuthCall, context);
 
-  Future<void> withPhone(String phone, BuildContext context) async {
-    await _authUseCase.phoneAuthCall(phone, context);
+  Future<void> withPhone(String phone, BuildContext context, DocumentReference unitRef) async {
+    await _authUseCase.phoneAuthCall(phone, context, unitRef);
   }
 
   Future<void> signOut(BuildContext context) async =>
